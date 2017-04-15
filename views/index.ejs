@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><%= title %></title>
+
+    <link rel="stylesheet" href="http://demos.jquerymobile.com/1.4.5/css/themes/default/jquery.mobile-1.4.5.min.css">
+    <link rel='stylesheet' href='/stylesheets/style.css' >
+    <script src="http://demos.jquerymobile.com/1.4.5/js/jquery.js" ></script>
+    <script src="http://demos.jquerymobile.com/1.4.5/js/jquery.mobile-1.4.5.min.js" ></script>
+
+  </head>
+  <body>
+    <h1>검색 엔진 결과 비교 ( TourSearch VS SolrSearch)  </h1>
+    <form id="target" action="destination.html">
+      <input type="search" name="search" id="keyword" value="" />
+      <input type="submit" value="검색">
+    </form>
+  <iframe id="searchResult" src="" frameborder="0" style="overflow: hidden; height: 100%;
+        width: 100%; position: absolute;" height="100%" width="100%" ></iframe>
+
+  </body>
+<script>
+    $( "#target" ).submit(function( event ) {
+        //alert( "Handler for .submit() called." );
+        var url = "http://127.0.0.1:3000/search/" + encodeURIComponent( $('#keyword').val() )
+        $('#searchResult').attr('src', url);
+        event.preventDefault();
+    });
+
+</script>
+</html>

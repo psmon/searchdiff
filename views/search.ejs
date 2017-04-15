@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><%= title %></title>
+
+    <link rel="stylesheet" href="http://demos.jquerymobile.com/1.4.5/css/themes/default/jquery.mobile-1.4.5.min.css">
+    <link rel='stylesheet' href='/stylesheets/style.css' >
+    <script src="http://demos.jquerymobile.com/1.4.5/js/jquery.js" ></script>
+    <script src="http://demos.jquerymobile.com/1.4.5/js/jquery.mobile-1.4.5.min.js" ></script>
+
+</head>
+<body>
+
+<p>기존검색엔진</p>
+<div id="left">
+    <table data-role="table" id="table-custom-1" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-theme="b" data-column-btn-text="Columns to display..." data-column-popup-theme="a">
+                 <thead>
+                   <tr class="ui-bar-d">
+                         <th data-priority="3">카테고리1</th>
+                         <th data-priority="4" >카테고리2</th>
+                         <th data-priority="1">상품명</th>
+                         <th data-priority="2">가격</th>
+                         <th data-priority="5">지역1</th>
+            <th data-priority="5">지역2</th>
+            <th data-priority="5" class="ui-table-cell-hidden">startdate</th>
+            <th data-priority="5" class="ui-table-cell-hidden">goodsgrade</th>
+            <th data-priority="5" class="ui-table-cell-hidden">goodscode</th>
+            <th data-priority="5" class="ui-table-cell-hidden">imageurl</th>
+
+                       </tr>
+                 </thead>
+                 <tbody>
+        <%- htmlResult %>
+        </tbody>
+    </table>
+
+</div>
+<p>솔라 검색엔진</p>
+<div id="right">
+
+    <table data-role="table" id="table-custom-2" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-theme="b" data-column-btn-text="Columns to display..." data-column-popup-theme="a">
+                 <thead>
+                   <tr class="ui-bar-d">
+                         <th data-priority="3">카테고리1</th>
+                         <th data-priority="4" >카테고리2</th>
+                         <th data-priority="1">상품명</th>
+                         <th data-priority="2">가격</th>
+                         <th data-priority="5">지역1</th>
+            <th data-priority="5">지역2</th>
+            <th data-priority="5" class="ui-table-cell-hidden">startdate</th>
+            <th data-priority="5" class="ui-table-cell-hidden">goodsgrade</th>
+            <th data-priority="5" class="ui-table-cell-hidden">goodscode</th>
+            <th data-priority="5" class="ui-table-cell-hidden">imageurl</th>
+
+                       </tr>
+                 </thead>
+                 <tbody>
+        <%- htmlResult %>
+        </tbody>
+    </table>
+
+</div>
+
+
+</body>
+<script>
+    $( "#target" ).submit(function( event ) {
+        alert( "Handler for .submit() called." );
+        event.preventDefault();
+    });
+</script>
+</html>
