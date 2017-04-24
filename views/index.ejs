@@ -12,9 +12,33 @@
 
   </head>
   <body>
-    <h1>검색 엔진 결과 비교 ( TourSearch VS SolrSearch)  </h1>
+    <h1>검색 엔진 결과 비교 ( TourSearch VS NewSearchEngine)  </h1>
     <form id="target" action="destination.html">
       <input type="search" name="search" id="keyword" value="" />
+
+      <fieldset data-role="controlgroup" data-type="horizontal"  name="sType" id="sType">
+        <legend>Choose Search Type:</legend>
+
+        <input type="radio" name="radio-choice" id="radio-choice-1" value="I" checked="checked" />
+        <label for="radio-choice-1">통합</label>
+
+        <input type="radio" name="radio-choice" id="radio-choice-2" value="E"  />
+        <label for="radio-choice-2">땡처리</label>
+
+        <input type="radio" name="radio-choice" id="radio-choice-3" value="O"  />
+        <label for="radio-choice-3">해외호텔</label>
+
+        <input type="radio" name="radio-choice" id="radio-choice-4" value="H"  />
+        <label for="radio-choice-4">국내숙박</label>
+
+        <input type="radio" name="radio-choice" id="radio-choice-5" value="R"  />
+        <label for="radio-choice-5">해외여행</label>
+
+        <input type="radio" name="radio-choice" id="radio-choice-6" value="T"  />
+        <label for="radio-choice-6">국내여행</label>
+
+      </fieldset>
+
       <input type="submit" value="검색">
     </form>
   <iframe id="searchResult" src="" frameborder="0" style="overflow: hidden; height: 100%;
@@ -23,9 +47,18 @@
   </body>
 <script>
     $( "#target" ).submit(function( event ) {
+        var sType = $("#sType :radio:checked").val();
         //alert( "Handler for .submit() called." );
-        var url = "http://127.0.0.1:3000/search/" + encodeURIComponent( $('#keyword').val() )
-        $('#searchResult').attr('src', url);
+        console.log("==="+sType);
+        if(sType == "I"){
+            var url = "search/" + encodeURIComponent( $('#keyword').val() )
+            $('#searchResult').attr('src', url);
+        }else{
+            var url = "searchCate/" + encodeURIComponent( $('#keyword').val() ) + "/" + sType;
+            $('#searchResult').attr('src', url);
+        }
+
+
         event.preventDefault();
     });
 
