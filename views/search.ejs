@@ -7,17 +7,68 @@
 
     <link rel="stylesheet" href="http://demos.jquerymobile.com/1.4.5/css/themes/default/jquery.mobile-1.4.5.min.css">
     <link rel='stylesheet' href='/stylesheets/style.css' >
+    <link rel='stylesheet' href='/stylesheets/api.css' />
+
+    <STYLE type="text/css">
+
+        /* remove padding from the IFRAME-pane */
+        .ui-layout-pane-center {
+            padding: 	0;
+        }
+        /* masks are normally transparent - make them visible (must 'override' default) */
+        .ui-layout-mask {
+            background:	#C00;
+            opacity:	.20;
+            filter:		alpha(opacity=20); /* IE */
+        }
+
+        /**
+         *	This CSS below is only for cosmetic and demo purposes
+         *	Nothing here affects the appearance of the layout
+         */
+
+        body {
+            background: #ffffff;
+            font-family:	Arial, sans-serif;
+            *font-size:		0.85em;
+        }
+        p {
+            margin:			1em 0;
+        }
+
+        .area
+        {
+            height: 100px;
+            padding: 10px;
+            margin-bottom: 20px;
+            background-color: #ADD8E6;
+            position: relative;
+
+        }
+
+    </STYLE>
+
     <script src="http://demos.jquerymobile.com/1.4.5/js/jquery.js" ></script>
     <script src="http://demos.jquerymobile.com/1.4.5/js/jquery.mobile-1.4.5.min.js" ></script>
 
+
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.6/proj4.js"></script>
     <script src="https://code.highcharts.com/maps/highmaps.js"></script>
-    <script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/mapdata/countries/gb/gb-all.js"></script>
     <script src="http://code.highcharts.com/mapdata/custom/world.js"></script>
 
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+
+    <!--script src="/Highcharts-5.0.9/api/js/exporting.js"></script-->
+    <!--script src="https://code.highcharts.com/maps/modules/exporting.js"></script-->
+
+
+
+
 </head>
 <body>
+
 
 
 <div class="left-box">
@@ -72,59 +123,141 @@
 </div>
 
 
-<div id="container"></div>
+<div class="ui-layout-center">
+    <div id="chart" style="min-width: 310px;  margin: 0 auto"></div>
+    <div id="container" style="min-width: 310px;  margin: 0 auto"></div>
+</div>
 
+
+
+
+<script>
+    $(function () {
+
+        $('#chart').highcharts({
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: '국가별 검색결과 Count'
+            },
+            subtitle: {
+                text: ''
+            },
+            xAxis: {
+                categories: [
+                    <% for(var i in RegionInfoList) { %>
+                    '<%= RegionInfoList[i].name %>',
+                    <% } %>
+                ],
+                title: {
+                    text: null
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'SearchCount',
+                    align: 'high'
+                },
+                labels: {
+                    overflow: 'justify'
+                }
+            },
+            tooltip: {
+                valueSuffix: ' count'
+            },
+            plotOptions: {
+                bar: {
+                    dataLabels: {
+                        enabled: true
+                    }
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'top',
+                x: -40,
+                y: 80,
+                floating: true,
+                borderWidth: 1,
+                backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+                shadow: true
+            },
+            credits: {
+                enabled: false
+            },
+            series: [{
+                name: 'Count',
+                data: [
+                    <% for(var i in RegionInfoList) { %>
+                    <%= RegionInfoList[i].count %>,
+                    <% } %>
+                ]
+            }
+            ]
+        });
+
+        $('#container').highcharts('Map', {
+
+            title: {
+                text: 'Highmaps basic lat/lon demo'
+            },
+
+            mapNavigation: {
+                enabled: true
+            },
+
+            tooltip: {
+                headerFormat: '',
+                pointFormat: '<b>{point.name}</b><br>Lat: {point.lat}, Lon: {point.lon}'
+            },
+
+            series: [{
+                // Use the gb-all map with no data as a basemap
+                mapData: Highcharts.maps['custom/world'],
+                name: 'Basemap',
+                borderColor: '#A0A0A0',
+                nullColor: 'rgba(200, 200, 200, 0.3)',
+                showInLegend: false
+            }, {
+                name: 'Separators',
+                type: 'mapline',
+                data: Highcharts.geojson(Highcharts.maps['countries/gb/gb-all'], 'mapline'),
+                color: '#707070',
+                showInLegend: false,
+                enableMouseTracking: false
+            }, {
+                // Specify points using lat/lon
+                type: 'mappoint',
+                name: 'Cities',
+                color: Highcharts.getOptions().colors[1],
+                data: [
+                    <% for(var i=0; i < GeoInfoList.length; i++) { %>
+                    {name: '<%=  GeoInfoList[i].name %>' ,lat:<%=  GeoInfoList[i].lat %>,lon:<%=  GeoInfoList[i].lon %> },
+                    <% } %>
+
+                ]
+            }]
+        });
+
+
+
+
+
+    });
+
+
+    $(document).ready(function() {
+        $( "#target" ).submit(function( event ) {
+            alert( "Handler for .submit() called." );
+            event.preventDefault();
+        });
+
+    });
+</script>
 
 </body>
-<script>
-    $( "#target" ).submit(function( event ) {
-        alert( "Handler for .submit() called." );
-        event.preventDefault();
-    });
 
-
-    Highcharts.mapChart('container', {
-
-        title: {
-            text: 'Highmaps basic lat/lon demo'
-        },
-
-        mapNavigation: {
-            enabled: true
-        },
-
-        tooltip: {
-            headerFormat: '',
-            pointFormat: '<b>{point.name}</b><br>Lat: {point.lat}, Lon: {point.lon}'
-        },
-
-        series: [{
-            // Use the gb-all map with no data as a basemap
-            mapData: Highcharts.maps['custom/world'],
-            name: 'Basemap',
-            borderColor: '#A0A0A0',
-            nullColor: 'rgba(200, 200, 200, 0.3)',
-            showInLegend: false
-        }, {
-            name: 'Separators',
-            type: 'mapline',
-            data: Highcharts.geojson(Highcharts.maps['countries/gb/gb-all'], 'mapline'),
-            color: '#707070',
-            showInLegend: false,
-            enableMouseTracking: false
-        }, {
-            // Specify points using lat/lon
-            type: 'mappoint',
-            name: 'Cities',
-            color: Highcharts.getOptions().colors[1],
-            data: [
-                <% for(var i=0; i < GeoInfoList.length; i++) { %>
-                    {name: '<%=  GeoInfoList[i].name %>' ,lat:<%=  GeoInfoList[i].lat %>,lon:<%=  GeoInfoList[i].lon %> },
-                <% } %>
-
-            ]
-        }]
-    });
-
-</script>
 </html>
